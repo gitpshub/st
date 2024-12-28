@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    transition: background-color 0.5s ease;
+}
+
+#app {
+    text-align: center;
+    color: white;
+}
+
+#speed {
+    font-size: 4em;
+    margin: 20px 0;
+}
+
+#status {
+    font-style: italic;
+}
+
