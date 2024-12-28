@@ -20,7 +20,7 @@ function updateSpeed(speed) {
     const roundedSpeed = Math.round(speed);
     speedElement.textContent = `${roundedSpeed} км/ч`;
 
-    document.body.style.backgroundColor = roundedSpeed < 40 ? 'green' : 'red';
+    document.body.style.backgroundColor = roundedSpeed < 53 ? 'green' : 'red';
 }
 
 function updateStatus(message) {
