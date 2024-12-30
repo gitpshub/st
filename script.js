@@ -1,6 +1,8 @@
 let wakeLock = null;
-let isSoundEnabled = false;
-const SPEED_LIMIT = 53; // км/ч
+let isSoundEnabled = true;
+let SPEED_LIMIT = 40; // км/ч
+let GEO_TIMEOUT = 5000; // 5 секунд
+let watchId;
 
 async function requestWakeLock() {
     if ('wakeLock' in navigator) {
@@ -95,11 +97,52 @@ function toggleSound() {
     updateStatus(isSoundEnabled ? 'Звук включен' : 'Звук выключен');
 }
 
+function openSettings() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+function closeSettings() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function updateSettingsDisplay() {
+    document.getElementById('speedLimitValue').textContent = SPEED_LIMIT;
+    document.getElementById('geoTimeoutValue').textContent = GEO_TIMEOUT / 1000;
+    document.getElementById('playSound').checked = isSoundEnabled;
+}
+
+function saveSettings(e) {
+    e.preventDefault();
+    SPEED_LIMIT = parseInt(document.getElementById('speedLimit').value);
+    GEO_TIMEOUT = parseInt(document.getElementById('geoTimeout').value) * 1000;
+    isSoundEnabled = document.getElementById('playSound').checked;
+    updateSettingsDisplay();
+    closeSettings();
+    restartGeolocation();
+}
+
+function restartGeolocation() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = navigator.geolocation.watchPosition(handlePosition, handleError, {
+            enableHighAccuracy: true,
+            timeout: GEO_TIMEOUT,
+            maximumAge: 0
+        });
+    }
+}
+
 function init() {
     if ("geolocation" in navigator) {
-        navigator.geolocation.watchPosition(handlePosition, handleError, {
+        watchId = navigator.geolocation.watchPosition(handlePosition, handleError, {
             enableHighAccuracy: true,
-            timeout: 5000,
+            timeout: GEO_TIMEOUT,
             maximumAge: 0
         });
         requestWakeLock();
@@ -111,6 +154,23 @@ function init() {
     if (toggleButton) {
         toggleButton.addEventListener('click', toggleSound);
     }
+
+    const openSettingsButton = document.getElementById('openSettings');
+    if (openSettingsButton) {
+        openSettingsButton.addEventListener('click', openSettings);
+    }
+
+    const closeSettingsButton = document.getElementById('closeSettings');
+    if (closeSettingsButton) {
+        closeSettingsButton.addEventListener('click', closeSettings);
+    }
+
+    const settingsForm = document.getElementById('settings-form');
+    if (settingsForm) {
+        settingsForm.addEventListener('submit', saveSettings);
+    }
+
+    updateSettingsDisplay();
 }
 
 // Запуск приложения после загрузки DOM
@@ -122,6 +182,4 @@ document.addEventListener('visibilitychange', async () => {
         await requestWakeLock();
     }
 });
-
-
 
