@@ -1,10 +1,11 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
     transition: background-color 0.5s ease;
 }
 
@@ -20,5 +21,38 @@ body {
 
 #status {
     font-style: italic;
+}
+
+#sound-control {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 9999;
+}
+
+.toggle-sound {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    background-color: #ffffff;
+    border: 3px solid #000000;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.toggle-sound:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+}
+
+.toggle-sound:active {
+    transform: scale(0.95);
 }
 
