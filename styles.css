@@ -30,7 +30,15 @@ body {
     z-index: 9999;
 }
 
-.toggle-sound {
+#settings-control {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9999;
+}
+
+.toggle-sound,
+.open-settings {
     width: 60px;
     height: 60px;
     font-size: 24px;
@@ -46,13 +54,53 @@ body {
     transition: all 0.3s ease;
 }
 
-.toggle-sound:hover {
+.toggle-sound:hover,
+.open-settings:hover {
     background-color: #f0f0f0;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     transform: scale(1.05);
 }
 
-.toggle-sound:active {
+.toggle-sound:active,
+.open-settings:active {
     transform: scale(0.95);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+button {
+    margin-right: 10px;
 }
 
