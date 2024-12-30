@@ -1,6 +1,6 @@
 let wakeLock = null;
 let isSoundEnabled = false;
-const SPEED_LIMIT = 40; // км/ч
+const SPEED_LIMIT = 53; // км/ч
 
 async function requestWakeLock() {
     if ('wakeLock' in navigator) {
