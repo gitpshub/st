@@ -1,6 +1,6 @@
-let lastPosition = null;
-let lastTimestamp = null;
 let wakeLock = null;
+let isSoundEnabled = false;
+const SPEED_LIMIT = 40; // км/ч
 
 async function requestWakeLock() {
     if ('wakeLock' in navigator) {
@@ -17,47 +17,38 @@ async function requestWakeLock() {
 
 function updateSpeed(speed) {
     const speedElement = document.getElementById('speed');
-    const roundedSpeed = Math.round(speed);
-    speedElement.textContent = `${roundedSpeed} км/ч`;
+    if (speedElement) {
+        const roundedSpeed = Math.round(speed);
+        speedElement.textContent = `${roundedSpeed} км/ч`;
 
-    document.body.style.backgroundColor = roundedSpeed < 53 ? 'green' : 'red';
+        const isOverSpeedLimit = roundedSpeed >= SPEED_LIMIT;
+        document.body.style.backgroundColor = isOverSpeedLimit ? 'red' : 'green';
+
+        if (isOverSpeedLimit && isSoundEnabled) {
+            playAlarm();
+        } else {
+            stopAlarm();
+        }
+    }
 }
 
 function updateStatus(message) {
     const statusElement = document.getElementById('status');
-    statusElement.textContent = message;
-}
-
-function calculateSpeed(position) {
-    const currentPosition = position.coords;
-    const currentTimestamp = position.timestamp;
-
-    if (lastPosition && lastTimestamp) {
-        const distance = calculateDistance(lastPosition, currentPosition);
-        const timeElapsed = (currentTimestamp - lastTimestamp) / 1000; // в секундах
-        const speedMPS = distance / timeElapsed;
-        const speedKMH = speedMPS * 3.6; // конвертация в км/ч
-
-        updateSpeed(speedKMH);
+    if (statusElement) {
+        statusElement.textContent = message;
     }
-
-    lastPosition = currentPosition;
-    lastTimestamp = currentTimestamp;
 }
 
-function calculateDistance(pos1, pos2) {
-    const R = 6371e3; // радиус Земли в метрах
-    const φ1 = pos1.latitude * Math.PI / 180;
-    const φ2 = pos2.latitude * Math.PI / 180;
-    const Δφ = (pos2.latitude - pos1.latitude) * Math.PI / 180;
-    const Δλ = (pos2.longitude - pos1.longitude) * Math.PI / 180;
-
-    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ/2) * Math.sin(Δλ/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-    return R * c; // в метрах
+function handlePosition(position) {
+    const speed = position.coords.speed;
+    
+    if (speed !== null) {
+        // Преобразуем скорость из м/с в км/ч
+        const speedKMH = speed * 3.6;
+        updateSpeed(speedKMH);
+    } else {
+        updateStatus("Данные о скорости недоступны");
+    }
 }
 
 function handleError(error) {
@@ -77,9 +68,36 @@ function handleError(error) {
     }
 }
 
+function playAlarm() {
+    const alarm = document.getElementById('alarmSound');
+    if (alarm) {
+        alarm.play().catch(e => console.error("Ошибка воспроизведения звука:", e));
+    }
+}
+
+function stopAlarm() {
+    const alarm = document.getElementById('alarmSound');
+    if (alarm) {
+        alarm.pause();
+        alarm.currentTime = 0;
+    }
+}
+
+function toggleSound() {
+    isSoundEnabled = !isSoundEnabled;
+    const toggleButton = document.getElementById('toggleSound');
+    if (toggleButton) {
+        const icon = toggleButton.querySelector('i');
+        if (icon) {
+            icon.className = isSoundEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+        }
+    }
+    updateStatus(isSoundEnabled ? 'Звук включен' : 'Звук выключен');
+}
+
 function init() {
     if ("geolocation" in navigator) {
-        navigator.geolocation.watchPosition(calculateSpeed, handleError, {
+        navigator.geolocation.watchPosition(handlePosition, handleError, {
             enableHighAccuracy: true,
             timeout: 5000,
             maximumAge: 0
@@ -88,10 +106,15 @@ function init() {
     } else {
         updateStatus("Геолокация не поддерживается вашим браузером.");
     }
+
+    const toggleButton = document.getElementById('toggleSound');
+    if (toggleButton) {
+        toggleButton.addEventListener('click', toggleSound);
+    }
 }
 
-// Запуск приложения
-init();
+// Запуск приложения после загрузки DOM
+document.addEventListener('DOMContentLoaded', init);
 
 // Обработка событий видимости страницы для управления Wake Lock
 document.addEventListener('visibilitychange', async () => {
@@ -99,4 +122,6 @@ document.addEventListener('visibilitychange', async () => {
         await requestWakeLock();
     }
 });
+
+
 
