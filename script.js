@@ -1,6 +1,6 @@
 let wakeLock = null;
 let isSoundEnabled = true;
-let SPEED_LIMIT = 40; // км/ч
+let SPEED_LIMIT = 55; // км/ч
 let GEO_TIMEOUT = 5000; // 5 секунд
 let watchId;
 
