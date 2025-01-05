@@ -104,3 +104,31 @@ button {
     margin: 8px 16px;
 }
 
+.button-settings {
+    height: 60px;
+    font-size: 18px;
+    background-color: #ffffff;
+    border: 3px solid #000000;
+    color: #000000;
+    border-radius: 30px;
+    padding: 0 16px;
+    margin: 16px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.settings-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.fa-save {
+    color: green;
+}
+
+.fa-close {
+    color: red;
+}
