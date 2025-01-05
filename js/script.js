@@ -1,8 +1,23 @@
 let wakeLock = null;
-let isSoundEnabled = true;
-let SPEED_LIMIT = 55; 
-let GEO_TIMEOUT = 5000; 
 let watchId;
+
+let appSettings, IS_SOUND_ENABLED, SPEED_LIMIT, GEO_TIMEOUT;
+const settingsKey = 'appSettings';
+
+function loadSettingsFromLS() {
+  const settings = localStorage.getItem(settingsKey);
+  return settings
+    ? JSON.parse(settings)
+    : {
+        IS_SOUND_ENABLED: true,
+        SPEED_LIMIT: 55,
+        GEO_TIMEOUT: 5000,
+      };
+}
+
+function saveSettingsToLS(settings) {
+  localStorage.setItem(settingsKey, JSON.stringify(settings));
+}
 
 const statusElement = document.getElementById('status');
 const alarm = document.getElementById('alarmSound');
@@ -38,7 +53,7 @@ function updateSpeed(speed) {
     const isOverSpeedLimit = roundedSpeed >= SPEED_LIMIT;
     document.body.style.backgroundColor = isOverSpeedLimit ? 'red' : 'green';
 
-    if (isOverSpeedLimit && isSoundEnabled) {
+    if (isOverSpeedLimit && IS_SOUND_ENABLED) {
       playAlarm();
     } else {
       stopAlarm();
@@ -90,17 +105,17 @@ function stopAlarm() {
 }
 
 function toggleSound() {
-  isSoundEnabled = !isSoundEnabled;
+  IS_SOUND_ENABLED = !IS_SOUND_ENABLED;
   const toggleButton = document.getElementById('toggleSound');
   if (toggleButton) {
     const icon = toggleButton.querySelector('i');
     if (icon) {
-      icon.className = isSoundEnabled
+      icon.className = IS_SOUND_ENABLED
         ? 'fas fa-volume-up'
         : 'fas fa-volume-mute';
     }
   }
-  updateStatus(isSoundEnabled ? 'Звук включен' : 'Звук выключен');
+  updateStatus(IS_SOUND_ENABLED ? 'Звук включен' : 'Звук выключен');
 }
 
 function openSettings() {
@@ -125,14 +140,22 @@ function updateSettingsDisplay() {
     (geoTimeout.value - geoTimeout.min) / (geoTimeout.max - geoTimeout.min)
   );
 
-  playSound.checked = isSoundEnabled;
+  playSound.checked = IS_SOUND_ENABLED;
 }
 
 function saveSettings(e) {
   e.preventDefault();
   SPEED_LIMIT = parseInt(speedLimit.value);
   GEO_TIMEOUT = parseInt(geoTimeout.value) * 1000;
-  isSoundEnabled = playSound.checked;
+  IS_SOUND_ENABLED = playSound.checked;
+
+  appSettings = {
+    IS_SOUND_ENABLED,
+    SPEED_LIMIT,
+    GEO_TIMEOUT,
+  };
+  saveSettingsToLS(appSettings);
+
   updateSettingsDisplay();
   closeSettings();
   restartGeolocation();
@@ -193,6 +216,12 @@ function init() {
       (this.value - this.min) / (this.max - this.min)
     );
   });
+
+  appSettings = loadSettingsFromLS();
+  IS_SOUND_ENABLED = !appSettings.IS_SOUND_ENABLED;
+  toggleSound();
+  SPEED_LIMIT = appSettings.SPEED_LIMIT;
+  GEO_TIMEOUT = appSettings.GEO_TIMEOUT;
 
   updateSettingsDisplay();
 }
