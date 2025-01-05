@@ -228,6 +228,12 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
+document.body.addEventListener('click', () => {
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+    }  
+});
+
 document.addEventListener('visibilitychange', async () => {
   if (wakeLock !== null && document.visibilityState === 'visible') {
     await requestWakeLock();
