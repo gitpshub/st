@@ -1,7 +1,7 @@
 let wakeLock = null;
 let isSoundEnabled = true;
-let SPEED_LIMIT = 55; // км/ч
-let GEO_TIMEOUT = 5000; // 5 секунд
+let SPEED_LIMIT = 55; 
+let GEO_TIMEOUT = 5000; 
 let watchId;
 
 const statusElement = document.getElementById('status');
@@ -54,7 +54,6 @@ function handlePosition(position) {
   const speed = position.coords.speed;
 
   if (speed !== null) {
-    // Преобразуем скорость из м/с в км/ч
     const speedKMH = speed * 3.6;
     updateSpeed(speedKMH);
   } else {
@@ -198,10 +197,8 @@ function init() {
   updateSettingsDisplay();
 }
 
-// Запуск приложения после загрузки DOM
 document.addEventListener('DOMContentLoaded', init);
 
-// Обработка событий видимости страницы для управления Wake Lock
 document.addEventListener('visibilitychange', async () => {
   if (wakeLock !== null && document.visibilityState === 'visible') {
     await requestWakeLock();
