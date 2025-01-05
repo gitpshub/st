@@ -7,6 +7,8 @@ body {
     justify-content: center;
     align-items: center;
     transition: background-color 0.5s ease;
+    background-color: green;
+    color: white;
 }
 
 #app {
@@ -75,11 +77,12 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
+    color:#000000;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 50% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
@@ -88,12 +91,12 @@ body {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 24px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 input[type="range"] {
@@ -106,18 +109,13 @@ button {
 
 .button-settings {
     height: 60px;
+    width: 60px;
     font-size: 18px;
     background-color: #ffffff;
     border: 3px solid #000000;
     color: #000000;
     border-radius: 30px;
-    padding: 0 16px;
-    margin: 16px 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
+    font-size: 24px;
 }
 
 .settings-buttons {
@@ -125,10 +123,93 @@ button {
     justify-content: space-around;
 }
 
-.fa-save {
+/* .fa-save {
     color: green;
 }
 
 .fa-close {
     color: red;
+} */
+
+.form-group span {
+    font-weight: 900;
+}
+
+input[type=range] {
+    -webkit-appearance: none; 
+    margin-top: 8px;
+    /* width: 100%; /* Ширина ползунка */
+    /* height: 16px; Высота дорожки */
+    /* background: #ddd; Цвет дорожки */
+    /* border-radius: 5px; Закругление углов дорожки */
+    /* outline: none; Убираем обводку */ 
+}
+
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Убираем стандартный стиль */
+    appearance: none;
+    width: 32px; /* Ширина точки ползунка */
+    height: 32px; /* Высота точки ползунка */
+    background: green; /* Цвет точки ползунка */
+    border-radius: 50%; /* Закругление углов точки ползунка */
+    cursor: pointer; /* Курсор при наведении */
+    margin-top: -8px;
+}
+
+input[type=range i]::-webkit-slider-runnable-track {
+    height: 16px;
+    /* background: green;  */
+    background: linear-gradient(to right, green 0%, green calc(var(--value) * 100%), #ddd calc(var(--value) * 100%), #ddd 100%);
+    border-radius: 5px;
+}
+
+input[type="checkbox"] {
+    display: none; /* Скрываем стандартный чекбокс */
+}
+
+/* Кастомный чекбокс */
+.custom-checkbox {
+    display: inline-block;
+    width: 20px; /* Ширина кастомного чекбокса */
+    height: 20px; /* Высота кастомного чекбокса */
+    border: 2px solid #ddd; /* Цвет рамки */
+    border-radius: 4px; /* Закругление углов */
+    background-color: #ddd;
+    cursor: pointer; /* Курсор при наведении */
+    position: relative; /* Для позиционирования псевдоэлемента */
+    /* margin-right: 8px; Отступ справа */
+}
+
+/* Стилизация чекбокса при активном состоянии */
+input[type="checkbox"]:checked + .custom-checkbox {
+    background-color: green; /* Цвет фона при активном состоянии */
+    border-color: green; /* Цвет рамки при активном состоянии */
+}
+
+/* Псевдоэлемент для галочки */
+.custom-checkbox::after {
+    content: '';
+    position: absolute;
+    left: 7px; /* Положение галочки */
+    top: 3px; /* Положение галочки */
+    width: 5px; /* Ширина галочки */
+    height: 8px; /* Высота галочки */
+    border: solid white; /* Цвет галочки */
+    border-width: 0 2px 2px 0; /* Формирование галочки */
+    transform: rotate(45deg); /* Поворот для создания галочки */
+    opacity: 0; /* Скрываем галочку по умолчанию */
+}
+
+/* Показ галочки при активном состоянии */
+input[type="checkbox"]:checked + .custom-checkbox::after {
+    opacity: 1; /* Показываем галочку при активном состоянии */
+}
+
+.playSound {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 8px;
 }
