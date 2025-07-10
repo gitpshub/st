@@ -1,5 +1,6 @@
 let wakeLock = null;
 let watchId;
+let visibleDots = false;
 
 let appSettings, IS_SOUND_ENABLED, SPEED_LIMIT, GEO_TIMEOUT;
 const settingsKey = 'appSettings';
@@ -223,6 +224,11 @@ function init() {
   SPEED_LIMIT = appSettings.SPEED_LIMIT;
   GEO_TIMEOUT = appSettings.GEO_TIMEOUT;
 
+  updateClock();
+  setInterval(() => {
+    updateClock();
+  }, 500);
+
   updateSettingsDisplay();
 }
 
@@ -239,3 +245,34 @@ document.addEventListener('visibilitychange', async () => {
     await requestWakeLock();
   }
 });
+
+const updateClock = () => {
+  visibleDots = !visibleDots;
+  const date = new Date();
+
+  const day = date.getDate();
+
+  const months = [
+    "января", "февраля", "марта", "апреля", "мая", "июня",
+    "июля", "августа", "сентября", "октября", "ноября", "декабря"
+  ];
+  const month = months[date.getMonth()];
+
+  const weekdays = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+  const weekday = weekdays[date.getDay()];
+
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  const dayText = document.getElementById('day');
+  const weekdayText = document.getElementById('weekDay');
+  const hourText = document.getElementById('hour');
+  const minText = document.getElementById('min');
+  const dbDots = document.getElementById('dbDots');
+  
+  dayText.textContent = `${day} ${month}`;
+  weekdayText.textContent = weekday;
+  hourText.textContent = hours;
+  minText.textContent = minutes;
+  dbDots.className = visibleDots ? 'tic':'tac';
+}

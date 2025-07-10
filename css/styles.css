@@ -9,6 +9,8 @@ body {
     transition: background-color 0.5s ease;
     background-color: green;
     color: white;
+    flex-direction: column;
+    gap: 80px;
 }
 
 #app {
@@ -194,4 +196,29 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
     flex-direction: row;
     align-items: center;
     gap: 8px;
+}
+
+#clock {
+    display: flex;
+    flex-direction: column;
+}
+
+#date {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.5em;
+    justify-content: space-between;
+}
+
+#time {
+    display: flex;
+    font-size: 5em;
+}
+
+#dbDots.tic {
+    color: #888;
+}
+
+#dbDots.tac {
+    color: #ffffff;
 }
