@@ -298,3 +298,7 @@ const city = 'Maykop';
 }
 
 getWeather();
+
+setInterval(() => {
+    getWeather();
+  }, 3600000);

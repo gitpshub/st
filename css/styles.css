@@ -211,6 +211,7 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 }
 
 #time {
+    width: 160px;
     display: flex;
     font-size: 4em;
     align-items: center;
@@ -233,14 +234,16 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 
 #weather {
     font-size: 1.5em;
+    width: 180px;
     text-align: center;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content:space-between;
 }
 
 #temp {
     font-size: 2em;
+    padding-left: 16px;
 }
 
 #icon img {
