@@ -276,3 +276,25 @@ const updateClock = () => {
   minText.textContent = minutes;
   dbDots.className = visibleDots ? 'tic':'tac';
 }
+
+const apiKey = '33aa5dc1c6d67229729f933e56c4b4e5';
+const city = 'Maykop';
+
+  async function getWeather() {
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`
+    );
+    if (!response.ok) throw new Error('Ошибка запроса погоды');
+    const data = await response.json();
+
+    document.getElementById('temp').textContent = `${Math.round(data.main.temp)}°C`;
+    const iconCode = data.weather[0].icon;
+    document.getElementById('icon').innerHTML = `<img src="https://openweathermap.org/img/wn/${iconCode}@2x.png" alt="Иконка погоды">`;
+  } catch (error) {
+    console.error(error);
+    document.getElementById('weather-widget').textContent = 'Не удалось загрузить погоду';
+  }
+}
+
+getWeather();
