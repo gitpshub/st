@@ -210,9 +210,21 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
     justify-content: space-between;
 }
 
+#hour, #min {
+    line-height: 1;
+}
+
 #time {
     display: flex;
     font-size: 5em;
+    align-items: center;
+    justify-content: center;
+}
+
+#dbDots {
+    height: 1.3em;
+    text-align: center;
+    font-weight: bold;
 }
 
 #dbDots.tic {
