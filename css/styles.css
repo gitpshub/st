@@ -10,7 +10,7 @@ body {
     background-color: green;
     color: white;
     flex-direction: column;
-    gap: 80px;
+    gap: 60px;
 }
 
 #app {
@@ -206,17 +206,13 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 #date {
     display: flex;
     flex-direction: row;
-    font-size: 1.5em;
+    font-size: 1.7em;
     justify-content: space-between;
-}
-
-#hour, #min {
-    line-height: 1;
 }
 
 #time {
     display: flex;
-    font-size: 5em;
+    font-size: 4em;
     align-items: center;
     justify-content: center;
 }
@@ -233,4 +229,21 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 
 #dbDots.tac {
     color: #ffffff;
+}
+
+#weather {
+    font-size: 1.5em;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#temp {
+    font-size: 2em;
+}
+
+#icon img {
+   height: 64px;
+   width: 64px;
 }
